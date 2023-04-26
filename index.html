@@ -9,18 +9,34 @@
             pointer-events: none;
         }
     </style>
-    <iframe title="vimeo-player" src="https://player.vimeo.com/video/76979871"
-        allow="autoplay; fullscreen; picture-in-picture" data-ready="true"
-        style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0">
-    </iframe>
+
     <script src="https://player.vimeo.com/api/player.js"></script>
     <script>
         var player = null;
-        function initPlayer() {
-            player?.destroy();
-            console.log("#####vimeo_embbed.html");
+
+
+        function initPlayer(id) {
             var iframe = document.querySelector('iframe');
-            player = new Vimeo.Player(iframe);
+            if (iframe) {
+                //delete iframe from dom
+                iframe.parentNode.removeChild(iframe);
+            }
+
+            //create new iframe
+            iframe = document.createElement('iframe');
+            iframe.title = "vimeo-player";
+            iframe.src = id;
+            iframe.id = "video-player";
+            iframe.allow = "autoplay; fullscreen; picture-in-picture";
+            iframe.setAttribute("data-ready", "true");
+            iframe.style = "position:absolute;top:0;left:0;width:100%;height:100%;";
+            iframe.frameborder = "0";
+            iframe.allowfullscreen = "";
+            document.body.appendChild(iframe);
+
+            console.log("#####vimeo_embbed.html");
+
+            self.player = new Vimeo.Player(iframe);
             console.log("#####instantiate player");
 
 
@@ -51,8 +67,7 @@
         }
 
         async function loadVideo(id) {
-            iframe.src = id;
-            initPlayer();
+            initPlayer(id);
         }
 
         async function playVideo() {
@@ -63,7 +78,7 @@
         async function pauseVideo() {
             try {
                 player.pause();
-                console.log(JSON.stringify(player));
+                JSON.stringify(player);
                 console.log("pauseVideo");
             } catch (error) {
                 console.log(error);
