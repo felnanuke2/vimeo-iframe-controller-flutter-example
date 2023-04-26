@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+    <style>
+        body {
+            background-color: black;
+            pointer-events: none;
+        }
+    </style>
+    <iframe title="vimeo-player"
+        src="<<initialVideoId>>?mobile=1&autoplay=1&loop=1&autopause=0&background=1&byline=0&portrait=0&title=0&speed=1&transparent=0&gesture=media"
+        allow="autoplay; fullscreen; picture-in-picture" data-ready="true"
+        style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0">
+    </iframe>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script>
+        console.log("#####vimeo_embbed.html");
+        var iframe = document.querySelector('iframe');
+        var player = new Vimeo.Player(iframe);
+        console.log("#####instantiate player");
+        player.on('error', function (data) {
+            window.flutter_inappwebview.callHandler('vimeoEventListener', 'error', data);
+        });
+
+        player.on('play', function () {
+            window.flutter_inappwebview.callHandler('vimeoEventListener', 'play');
+        });
+
+        player.on('pause', function () {
+            window.flutter_inappwebview.callHandler('vimeoEventListener', 'pause');
+        });
+
+        player.on('volumechange', function (data) {
+            var isMute = false;
+            window.flutter_inappwebview.callHandler('vimeoEventListener', 'volumechange', data);
+        })
+
+
+        player.on('loaded', function (data) {
+            window.flutter_inappwebview.callHandler('vimeoEventListener', 'loaded', data);
+        })
+        console.log("#####set all listeners");
+
+        async function loadVideo(id) {
+            await player.loadVideo(id);
+        }
+
+        async function playVideo() {
+            await player.play();
+            console.log("playVideo");
+        }
+
+        async function pauseVideo() {
+            try {
+                player.pause();
+                console.log(JSON.stringify(player));
+                console.log("pauseVideo");
+            } catch (error) {
+                console.log(error);
+                console.log("pauseVideo error");
+            }
+        }
+
+        async function muteVideo() {
+            await player.setVolume(0);
+            console.log("pauseVideo");
+        }
+        async function unmuteVideo() {
+            await player.setVolume(1);
+            console.log("pauseVideo");
+        }
+
+        console.log("#####create all functions");
+    </script>
+</body>
+
+</html>
