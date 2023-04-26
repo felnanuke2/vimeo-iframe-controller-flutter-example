@@ -20,6 +20,10 @@
         var iframe = document.querySelector('iframe');
         var player = new Vimeo.Player(iframe);
         console.log("#####instantiate player");
+
+        window.flutter_inappwebview.callHandler('vimeoEventListener', 'page_loaded');
+
+
         player.on('error', function (data) {
             window.flutter_inappwebview.callHandler('vimeoEventListener', 'error', data);
         });
