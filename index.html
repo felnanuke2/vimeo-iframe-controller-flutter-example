@@ -9,46 +9,50 @@
             pointer-events: none;
         }
     </style>
-    <iframe title="vimeo-player"
-        src="https://player.vimeo.com/video/76979871"
+    <iframe title="vimeo-player" src="https://player.vimeo.com/video/76979871"
         allow="autoplay; fullscreen; picture-in-picture" data-ready="true"
         style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0">
     </iframe>
     <script src="https://player.vimeo.com/api/player.js"></script>
     <script>
-        console.log("#####vimeo_embbed.html");
-        var iframe = document.querySelector('iframe');
-        var player = new Vimeo.Player(iframe);
-        console.log("#####instantiate player");
-
-       
-
-
-        player.on('error', function (data) {
-            window.flutter_inappwebview.callHandler('vimeoEventListener', 'error', data);
-        });
-
-        player.on('play', function () {
-            window.flutter_inappwebview.callHandler('vimeoEventListener', 'play');
-        });
-
-        player.on('pause', function () {
-            window.flutter_inappwebview.callHandler('vimeoEventListener', 'pause');
-        });
-
-        player.on('volumechange', function (data) {
-            var isMute = false;
-            window.flutter_inappwebview.callHandler('vimeoEventListener', 'volumechange', data);
-        })
+        var player = null;
+        function initPlayer() {
+            player?.destroy();
+            console.log("#####vimeo_embbed.html");
+            var iframe = document.querySelector('iframe');
+            player = new Vimeo.Player(iframe);
+            console.log("#####instantiate player");
 
 
-        player.on('loaded', function (data) {
-            window.flutter_inappwebview.callHandler('vimeoEventListener', 'loaded', data);
-        })
-        console.log("#####set all listeners");
+
+
+            player.on('error', function (data) {
+                window.flutter_inappwebview.callHandler('vimeoEventListener', 'error', data);
+            });
+
+            player.on('play', function () {
+                window.flutter_inappwebview.callHandler('vimeoEventListener', 'play');
+            });
+
+            player.on('pause', function () {
+                window.flutter_inappwebview.callHandler('vimeoEventListener', 'pause');
+            });
+
+            player.on('volumechange', function (data) {
+                var isMute = false;
+                window.flutter_inappwebview.callHandler('vimeoEventListener', 'volumechange', data);
+            })
+
+
+            player.on('loaded', function (data) {
+                window.flutter_inappwebview.callHandler('vimeoEventListener', 'loaded', data);
+            })
+            console.log("#####set all listeners");
+        }
 
         async function loadVideo(id) {
             iframe.src = id;
+            initPlayer();
         }
 
         async function playVideo() {
@@ -76,7 +80,7 @@
             console.log("pauseVideo");
         }
         console.log("#####create all functions");
-        
+
     </script>
 </body>
 
