@@ -21,7 +21,7 @@
         var player = new Vimeo.Player(iframe);
         console.log("#####instantiate player");
 
-        window.flutter_inappwebview.callHandler('vimeoEventListener', 'page_loaded');
+       
 
 
         player.on('error', function (data) {
@@ -75,8 +75,9 @@
             await player.setVolume(1);
             console.log("pauseVideo");
         }
-
+ window.flutter_inappwebview.callHandler('vimeoEventListener', 'page_loaded');
         console.log("#####create all functions");
+        
     </script>
 </body>
 
